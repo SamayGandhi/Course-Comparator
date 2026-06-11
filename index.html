@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Comparator | GTU DE Project</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="toastContainer" class="toast-container"></div>
+
+    <nav class="navbar">
+        <div class="logo" onclick="switchTab('home')">
+            <i class="fas fa-layer-group"></i> <span>Course<span>Comparator</span></span>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="javascript:void(0)" onclick="switchTab('home')" id="nav-home" class="active">Home</a></li>
+            <li><a href="javascript:void(0)" onclick="switchTab('categories')" id="nav-categories">Explore</a></li>
+            <li><a href="javascript:void(0)" onclick="switchTab('support')" id="nav-support">Support</a></li>
+            <li class="auth-only" style="display: none;"><a href="javascript:void(0)" onclick="switchTab('profile')" id="nav-profile">My Dashboard</a></li>
+            <li id="loginBtnLi"><button class="btn-primary" onclick="openLoginModal()">Login</button></li>
+            <li class="auth-only" style="display: none;"><button class="btn-outline" onclick="handleLogout()">Logout</button></li>
+        </ul>
+    </nav>
+
+    <div id="main-content">
+        <section id="section-home">
+            <header class="hero">
+                <div class="hero-bg-overlay"></div>
+                <div class="hero-content">
+                    <span class="badge"><i class="fas fa-rocket"></i> Premium Course Comparison</span>
+                    <h1>Compare Once.<br><span class="highlight">Learn Forever.</span></h1>
+                    <p>Find the best courses and enroll directly or compare to get exclusive student discounts.</p>
+                    
+                    <div class="search-container">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search for React, GATE, AI, Finance...">
+                        <button onclick="executeSearch()">Search</button>
+                        <ul id="searchDropdown" class="search-dropdown"></ul>
+                    </div>
+                    
+                    <div class="search-suggestions">
+                        <span>Trending:</span>
+                        <span class="sugg-tag" onclick="setSearch('Web Dev')">Web Dev</span>
+                        <span class="sugg-tag" onclick="setSearch('GATE')">GATE Prep</span>
+                        <span class="sugg-tag" onclick="setSearch('Prompt Engineering')">AI Prompts</span>
+                        <span class="sugg-tag" onclick="setSearch('Free')">Free Courses</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="container">
+                <div class="filter-wrapper">
+                    <div class="filter-chips" id="filterChips"></div>
+                </div>
+
+                <div class="grid-header">
+                    <h2 id="gridTitle">Trending Courses</h2>
+                    <p id="selectionStatus">Select a course to auto-filter the category, or click Enroll to buy instantly.</p>
+                </div>
+                
+                <div class="course-grid" id="courseGrid"></div>
+            </div>
+        </section>
+
+        <section id="section-categories" class="container" style="display: none;">
+            <div class="grid-header">
+                <h2>Browse by Category</h2>
+                <p>Explore 10 specialized domains with exclusive enrollment discounts.</p>
+            </div>
+            <div class="cat-grid">
+                <div class="cat-item" onclick="jumpToCategory('Web Dev')"><div class="cat-icon"><i class="fas fa-code"></i></div><h3>Web Development</h3><p>React, Node.js, Fullstack</p></div>
+                <div class="cat-item" onclick="jumpToCategory('App Dev')"><div class="cat-icon"><i class="fas fa-mobile-alt"></i></div><h3>App Development</h3><p>Android, iOS, Flutter</p></div>
+                <div class="cat-item" onclick="jumpToCategory('Data Science')"><div class="cat-icon"><i class="fas fa-brain"></i></div><h3>Data Science & AI</h3><p>Python, ML, Prompt Eng.</p></div>
+                <div class="cat-item" onclick="jumpToCategory('Cloud')"><div class="cat-icon"><i class="fas fa-cloud"></i></div><h3>Cloud & Web3</h3><p>AWS, Azure, Blockchain</p></div>
+                <div class="cat-item" onclick="jumpToCategory('Cybersecurity')"><div class="cat-icon"><i class="fas fa-shield-alt"></i></div><h3>Cybersecurity</h3><p>Ethical Hacking, InfoSec</p></div>
+                <div class="cat-item" onclick="jumpToCategory('Design')"><div class="cat-icon"><i class="fas fa-palette"></i></div><h3>UI/UX Design</h3><p>Figma, Animation, Graphics</p></div>
+                <div class="cat-item" onclick="jumpToCategory('Marketing')"><div class="cat-icon"><i class="fas fa-bullhorn"></i></div><h3>Digital Marketing</h3><p>SEO, Social Media, Ads</p></div>
+                <div class="cat-item" onclick="jumpToCategory('Finance')"><div class="cat-icon"><i class="fas fa-chart-line"></i></div><h3>Finance & Accounts</h3><p>Investing, Tally, Modeling</p></div>
+                <div class="cat-item" onclick="jumpToCategory('GATE')"><div class="cat-icon"><i class="fas fa-book-open"></i></div><h3>GATE & Exams</h3><p>Preparation, Mock Tests</p></div>
+                <div class="cat-item" onclick="jumpToCategory('Core Engineering')"><div class="cat-icon"><i class="fas fa-cogs"></i></div><h3>Core Engineering</h3><p>Mechanical, Civil, Electrical</p></div>
+            </div>
+        </section>
+
+        <section id="section-support" class="container" style="display: none;">
+            <div class="grid-header">
+                <h2><i class="fas fa-headset"></i> 24/7 User Support</h2>
+                <p>Have a doubt, feedback, or need help with a course? Reach out to us.</p>
+            </div>
+            <div class="support-card">
+                <div class="form-group">
+                    <label>Your Name</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="contactName" placeholder="Enter your name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Subject / Course Name</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-book"></i>
+                        <input type="text" id="contactSubject" placeholder="E.g., Issue with React Course">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Issue / Query</label>
+                    <textarea id="contactMessage" rows="5" class="support-textarea" placeholder="Describe your issue here..."></textarea>
+                </div>
+                <button class="btn-full" onclick="submitSupport()"><i class="fas fa-paper-plane"></i> Submit Ticket</button>
+            </div>
+        </section>
+
+        <section id="section-profile" class="container" style="display: none;">
+            <div class="profile-card">
+                <div class="profile-cover"></div>
+                <div class="profile-info">
+                    <img id="profileAvatar" src="" alt="Profile Picture">
+                    <h2 id="profileName">User Name</h2>
+                    <p class="college-tag" id="profileBio"><i class="fas fa-user-graduate"></i> Learner at Course Comparator</p>
+                    <div class="profile-stats">
+                        <div class="stat"><i class="fas fa-graduation-cap"></i><span id="statEnrolled">0</span><label>Enrolled</label></div>
+                        <div class="stat"><i class="fas fa-balance-scale"></i><span id="statCompared">0</span><label>Compared</label></div>
+                        <div class="stat"><i class="fas fa-wallet"></i><span id="statSaved">₹0</span><label>Money Saved</label></div>
+                    </div>
+                    
+                    <div class="enrolled-section">
+                        <h3><i class="fas fa-laptop-code"></i> My Enrolled Courses</h3>
+                        <div id="enrolledCoursesList" class="enrolled-list">
+                            <p style="color:#94a3b8;">You have not enrolled in any courses yet.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-card auth-card">
+            <button class="close-icon" onclick="closeLoginModal()">&times;</button>
+            <div class="auth-header">
+                <div class="auth-icon"><i class="fas fa-sign-in-alt"></i></div>
+                <h2>Welcome Back</h2>
+                <p>Login to track your enrollments and savings.</p>
+            </div>
+            <div class="form-group">
+                <label>Name or Username</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="userInp" placeholder="Enter your name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Password (Optional)</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="passInp" placeholder="Enter password">
+                </div>
+            </div>
+            <button class="btn-full" onclick="handleLogin()">Login to Dashboard <i class="fas fa-arrow-right"></i></button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="checkoutModal">
+        <div class="modal-card checkout-card">
+            <button class="close-icon" onclick="closeCheckoutModal()">&times;</button>
+            <h2>Secure Enrollment</h2>
+            <div class="checkout-details">
+                <h3 id="checkoutCourseName">Course Name</h3>
+                <p class="checkout-platform" id="checkoutPlatform">Platform</p>
+                <div class="price-breakdown">
+                    <div class="price-row"><span>Platform Price:</span> <span id="checkoutOriginal" style="text-decoration: line-through; color: #94a3b8;">₹0</span></div>
+                    <div class="price-row"><span>Discount / Offer:</span> <span style="color: #10b981;">- ₹<span id="checkoutDiscount">0</span></span></div>
+                    <div class="price-row total"><span>Final Amount:</span> <span id="checkoutFinal">₹0</span></div>
+                </div>
+            </div>
+            <button class="btn-full" style="background: #10b981;" onclick="processPayment()">Proceed to Secure Payment <i class="fas fa-shield-alt"></i></button>
+        </div>
+    </div>
+
+    <div class="compare-bar" id="compareBar">
+        <div class="bar-info">
+            <i class="fas fa-balance-scale bar-icon"></i>
+            <div>
+                <p class="bar-title">Comparison Panel</p>
+                <p id="barText" class="bar-subtitle">Select 1 more to compare</p>
+            </div>
+        </div>
+        <button class="btn-compare-action" id="btnRunCompare" disabled onclick="openCompareModal()">Compare Now <i class="fas fa-bolt"></i></button>
+    </div>
+
+    <div class="modal-overlay" id="compareModal">
+        <div class="modal-card compare-result-card">
+            <header class="compare-header">
+                <h2><i class="fas fa-trophy"></i> Head-to-Head Analysis</h2>
+                <button class="close-icon" onclick="closeCompareModal()">&times;</button>
+            </header>
+            <div class="table-wrapper">
+                <table id="compareTable" class="premium-table"></table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="reviewsModal">
+        <div class="modal-card" style="max-width: 600px; padding: 2rem;">
+            <button class="close-icon" onclick="closeReviewsModal()">&times;</button>
+            <h2 style="margin-bottom: 10px; color: var(--text-dark);"><i class="fas fa-comments"></i> Student Reviews</h2>
+            <div class="trust-banner">
+                <i class="fas fa-shield-alt"></i> <b>Trust & Safety:</b> Reviews are AI-moderated and strictly from Verified Enrolled Students. Fake reviews are automatically filtered out.
+            </div>
+            <h3 id="reviewCourseTitle" style="color: var(--brand); margin-bottom: 1.5rem; font-size: 1.1rem;"></h3>
+            <div id="reviewsListContainer" style="max-height: 400px; overflow-y: auto;">
+                </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="writeReviewModal">
+        <div class="modal-card" style="max-width: 500px; padding: 2.5rem;">
+            <button class="close-icon" onclick="closeWriteReviewModal()">&times;</button>
+            <h2 style="margin-bottom: 10px; color: var(--text-dark);"><i class="fas fa-star"></i> Write a Review</h2>
+            <p style="color: var(--text-gray); margin-bottom: 1.5rem;">Share your experience for <b id="writeReviewCourseName" style="color: var(--brand);"></b></p>
+            
+            <div class="form-group">
+                <label>Your Feedback</label>
+                <textarea id="newReviewText" rows="4" class="support-textarea" placeholder="What did you like or dislike about this course?"></textarea>
+            </div>
+            <button class="btn-full" onclick="submitNewReview()"><i class="fas fa-paper-plane"></i> Post Verified Review</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Course Comparator Platform | Designed for GTU DE Semester-6</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
